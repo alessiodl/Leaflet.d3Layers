@@ -9,8 +9,8 @@ $(document).ready(function(){
 	
 	// Define BaseLayers
 	gray 	= L.esri.basemapLayer('Gray');
-	dgray 	= L.esri.basemapLayer('DarkGray');
-	streets = L.esri.basemapLayer('Streets').addTo(map);
+	dgray 	= L.esri.basemapLayer('DarkGray').addTo(map);
+	streets = L.esri.basemapLayer('Streets');
 	topo 	= L.esri.basemapLayer('Topographic');
 	terrain	= L.esri.basemapLayer('Terrain');
 	imagery = L.layerGroup([
