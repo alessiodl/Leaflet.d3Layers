@@ -2,7 +2,7 @@ var map;
 
 $(document).ready(function(){
 	// Create the Map
-	map = L.map('map').setView([42, 13.5], 4);
+	map = L.map('map').setView([42, 13.5], 5);
 	
 	// Create an SVG level on the map
 	svg = d3.select(map.getPanes().overlayPane).append("svg");
