@@ -3,7 +3,7 @@
  *
  * @author: Alessio Di Lorenzo <a.dilorenzo@izs.it>
  * @description: Point layer class with D3 and QuadTree
- * @version: 1.0 beta
+ * @version: 1.0.1 beta
  *
  */
 
@@ -32,14 +32,13 @@ L.D3PointLayer = L.Layer.extend({
    
    addData: function (featureCollection) {
 	   
-	   qtree = d3.geom.quadtree(featureCollection.features.map(function (data, i) {
+		qtree = d3.geom.quadtree(featureCollection.features.map(function (data, i) {
 			return {
 	    		x: data.geometry.coordinates[0],
 	    		y: data.geometry.coordinates[1],
 	    		all: data
 	    	};
 		}));
-		
    },
 
    onAdd: function (map) {   
@@ -48,44 +47,29 @@ L.D3PointLayer = L.Layer.extend({
 	   g = svg.append("g")
 	   		  .attr("class", "leaflet-zoom-hide")
 			  .attr("id",lyr_id);
-	   
-	   function updateNodes(quadtree) {
-			var nodes = [];
-			quadtree.depth = 0; // root
-				quadtree.visit(function (node, x1, y1, x2, y2) {
-				var nodeRect = {
-					left: MercatorXofLongitude(x1),
-					right: MercatorXofLongitude(x2),
-					bottom: MercatorYofLatitude(y1),
-					top: MercatorYofLatitude(y2),
-				};
-				node.width = (nodeRect.right - nodeRect.left);
-				node.height = (nodeRect.top - nodeRect.bottom);
-					if (node.depth == 0) {
-					// console.log("width: " + node.width + "; height: " + node.height);
-				}
-				nodes.push(node);
-				for (var i = 0; i < 4; i++) {
-					if (node.nodes[i]) node.nodes[i].depth = node.depth + 1;
-				}
-			});
-			return nodes;
-		}
-	   
-	   	// Draw the data on map
-   		var mapBounds = map.getBounds();
-   		var subset = search(qtree, mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth());
-   		redrawSubset(subset);
    		
    		updateNodes(qtree);
-   		map.on('moveend', mapmove);
-   		mapmove();
+		
+		map.on('moveend', this._moveend, this);
+		this._reset();
    },
 
    onRemove: function (map) {
 	   	SvgGroupID = "g#"+lyr_id+"";
 	   	// console.log(SvgGroupID);
 	   	d3.select(SvgGroupID).remove();
+   },
+   
+   _moveend: function(){
+		var mapBounds = map.getBounds();
+		var subset = search(qtree, mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth());
+		redrawSubset(subset);
+   },
+   
+   _reset: function(){
+		var mapBounds = map.getBounds();
+		var subset = search(qtree, mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth());
+		redrawSubset(subset);
    }
    
 });
@@ -107,6 +91,29 @@ MercatorXofLongitude = function (lon) {
 MercatorYofLatitude = function (lat) {
 	return (Math.log(Math.tan((90 + lat) * Math.PI / 360)) / (Math.PI / 180)) * 20037508.34 / 180;
 };
+
+function updateNodes(quadtree) {
+	var nodes = [];
+	quadtree.depth = 0; // root
+	quadtree.visit(function (node, x1, y1, x2, y2) {
+		var nodeRect = {
+			left: MercatorXofLongitude(x1),
+			right: MercatorXofLongitude(x2),
+			bottom: MercatorYofLatitude(y1),
+			top: MercatorYofLatitude(y2),
+		};
+		node.width = (nodeRect.right - nodeRect.left);
+		node.height = (nodeRect.top - nodeRect.bottom);
+		if (node.depth == 0) {
+			// console.log("width: " + node.width + "; height: " + node.height);
+		}
+		nodes.push(node);
+		for (var i = 0; i < 4; i++) {
+			if (node.nodes[i]) node.nodes[i].depth = node.depth + 1;
+		}
+	});
+	return nodes;
+}
 
 //Find the nodes within the specified rectangle.
 function search(quadtree, x0, y0, x3, y3) {
@@ -270,9 +277,3 @@ function redrawSubset(subset) {
 	    });
     }
 };
-
-function mapmove(e) {
-	var mapBounds = map.getBounds();
-	var subset = search(qtree, mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth());
-	redrawSubset(subset);
-}
