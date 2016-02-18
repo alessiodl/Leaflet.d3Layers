@@ -19,11 +19,11 @@ if (typeof L == "undefined") {
 L.D3PolygonLayer = L.Layer.extend({
 	
 	initialize: function (layerConfigObject) {
-		
-		lyr_id 			= layerConfigObject.layerID;
-		styleObject 	= layerConfigObject.symbolizer; 
-		highlightObject = layerConfigObject.highlight;
-		popupObject 	= layerConfigObject.popup;
+		// Layer configuration data
+		this._lyrName = layerConfigObject.layerName;
+		this._styleObject = layerConfigObject.symbolizer;
+		this._highlightObject = layerConfigObject.highlight;
+		this._popupObject = layerConfigObject.popup;
 
    },
    
