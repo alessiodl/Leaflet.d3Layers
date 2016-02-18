@@ -221,7 +221,7 @@ L.D3PointLayer = L.Layer.extend({
 				// console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
 				var popupTitle = popup.template.title; // or... d.properties['ID_OUTBREAK']
 				var attributeArray = popup.template.values;
-				var popupContent = "<h3>"+popupTitle+"</h3>";
+				var popupContent = "<h5>"+popupTitle+"</h5><hr>";
 				attributeArray.forEach(function(obj){
 					// console.log(obj);
 					label = obj.label;

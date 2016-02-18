@@ -2,7 +2,7 @@ var map, outbreaks;
 
 $(document).ready(function(){
 	// Create the Map
-	map = L.map('map').setView([42, 13.5], 5);
+	map = L.map('map').setView([15, -15.0], 2);
 	
 	// Create an SVG level on the map
 	svg = d3.select(map.getPanes().overlayPane).append("svg");
@@ -28,7 +28,7 @@ $(document).ready(function(){
 	// Run it!
 	query.run(function(error, featureCollection, response){
 		numResults = featureCollection.features.length;
-	    console.log('Outbreaks caricati:' + numResults);
+	    $("#num_results").html(numResults);
 	    if (numResults >=10001) {
 	    	alert(numResults+" punti sono troppi! Che ci devi fare?");
 	    	return;
