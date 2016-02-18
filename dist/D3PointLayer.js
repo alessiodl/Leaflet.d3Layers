@@ -1,7 +1,7 @@
 /**
  * Copyright 2016 
  *
- * @author: Alessio Di Lorenzo <a.dilorenzo@izs.it>
+ * @author: Alessio Di Lorenzo <alessio.dl@gmail.com>
  * @description: Point layer class with D3 and QuadTree
  * @version: 1.0.2 beta
  *
