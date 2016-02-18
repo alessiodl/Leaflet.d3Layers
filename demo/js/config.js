@@ -41,9 +41,10 @@ var outbreaksPopupTemplate = {
 
 var lyrConfig = {
 	// JSON configuration object for Outbreaks
+	// ***************************************
 	outbreaks: {
-		mapserviceID: "0",
-		layerID:"Outbreaks",
+		layerId: "0",
+		layerName:"Outbreaks",
 		symbolizer: outbreakCategories,
 		highlight: {
 			active:true,
@@ -56,4 +57,5 @@ var lyrConfig = {
 		}
 	},
 	// JSON configuration object for PIPPO...
+	// ***************************************
 };

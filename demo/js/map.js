@@ -1,4 +1,4 @@
-var map;
+var map, outbreaks;
 
 $(document).ready(function(){
 	// Create the Map
@@ -19,11 +19,11 @@ $(document).ready(function(){
 	]);
 
 	// Create D3 Layer instance and add the event listening for the data load
-	var outbreaks = L.d3PointLayer(lyrConfig.outbreaks)
+	outbreaks = L.d3PointLayer(lyrConfig.outbreaks)
 					.on("dataLoaded", function() { console.log("Data loaded!"); });
 					
 	// Query extracting the data
-	var query = L.esri.query({url: global.mapservice+"/"+lyrConfig.outbreaks.mapserviceID});
+	var query = L.esri.query({url: global.mapservice+"/"+lyrConfig.outbreaks.layerId});
 	query.where(" DISEASE <> 'BT' ");
 	// Run it!
 	query.run(function(error, featureCollection, response){
