@@ -3,7 +3,7 @@
  *
  * @author: Alessio Di Lorenzo <a.dilorenzo@izs.it>
  * @description: Point layer class with D3 and QuadTree
- * @version: 1.0.1 beta
+ * @version: 1.0.2 beta
  *
  */
 
@@ -22,7 +22,7 @@ var qtree, lyr_id, styleObject, highlightObject, popupObject;
 L.D3PointLayer = L.Layer.extend({
 	
 	initialize: function (layerConfigObject) {
-	   
+		
 		lyr_id 			= layerConfigObject.layerID;
 		styleObject 	= layerConfigObject.symbolizer; 
 		highlightObject = layerConfigObject.highlight;
@@ -31,7 +31,8 @@ L.D3PointLayer = L.Layer.extend({
    },
    
    addData: function (featureCollection) {
-	   
+		
+		// Load data in qtree structure
 		qtree = d3.geom.quadtree(featureCollection.features.map(function (data, i) {
 			return {
 	    		x: data.geometry.coordinates[0],
@@ -39,11 +40,14 @@ L.D3PointLayer = L.Layer.extend({
 	    		all: data
 	    	};
 		}));
+		
+		// Signal that the data is ready
+		this.fire('dataLoaded', {data: featureCollection});
    },
 
    onAdd: function (map) {   
 	   	   
-	   // Create SVG Group
+	   // Create the SVG group to be filled with data elements
 	   g = svg.append("g")
 	   		  .attr("class", "leaflet-zoom-hide")
 			  .attr("id",lyr_id);
@@ -52,12 +56,14 @@ L.D3PointLayer = L.Layer.extend({
 		
 		map.on('moveend', this._moveend, this);
 		this._reset();
+		this.fire('layerAdded');
    },
 
    onRemove: function (map) {
 	   	SvgGroupID = "g#"+lyr_id+"";
 	   	// console.log(SvgGroupID);
 	   	d3.select(SvgGroupID).remove();
+		this.fire('layerRemoved');
    },
    
    _moveend: function(){

@@ -18,9 +18,10 @@ $(document).ready(function(){
 	          L.esri.basemapLayer('ImageryLabels')
 	]);
 
-	// Create D3 Layer instance
-	var outbreaks = L.d3PointLayer(lyrConfig.outbreaks);
-	
+	// Create D3 Layer instance and add the event listening for the data load
+	var outbreaks = L.d3PointLayer(lyrConfig.outbreaks)
+					.on("dataLoaded", function() { console.log("Data loaded!"); });
+					
 	// Query extracting the data
 	var query = L.esri.query({url: global.mapservice+"/"+lyrConfig.outbreaks.mapserviceID});
 	query.where(" DISEASE <> 'BT' ");
@@ -35,11 +36,15 @@ $(document).ready(function(){
 	    	alert("Nessun risultato!");
 	    } else {
 	    	// Adds the data to the D3 Layer
-	    	outbreaks.addData(featureCollection);
+	    	outbreaks.addData(featureCollection)
 	    	// Adds the D3 Layer to the map
 	    	outbreaks.addTo(map);
 	    }
 	}); // -- query.run closed
+	
+	// Events
+	outbreaks.on("layerAdded", function(){ console.log("Layer added to the map"); });
+	outbreaks.on("layerRemoved", function(){ console.log("Layer removed from the map"); });
 	
 	var baseLayers = {
 		"Gray": gray,
