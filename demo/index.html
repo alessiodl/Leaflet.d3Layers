@@ -4,26 +4,74 @@
     	<meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
 		<meta name="author" content="Alessio Di Lorenzo" />
 		<meta name="language" content="en" />
-		<title>Point layer example</title>
+		<title>Leaflet.d3Layers plugin</title>
 		<link rel="icon" href="img/favicon.png" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<!-- LeafletJS CSS -->
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
+		<!-- App CSS -->
+		<link type="text/css" href="css/style.css" rel="Stylesheet"/>
+	</head>
+	<body>
+		<!-- Fixed navbar -->
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Leaflet.d3Layers demo site</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<!-- ul class="nav navbar-nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul -->
+				</div><!--/.nav-collapse -->
+			</div>
+		</nav>
+
+		<!-- Begin page content -->
+		<div class="container">
+			<div class="row">
+				<h2>D3 Point layer</h2>
+				<hr>
+				<p class="lead">The map in this example is loading <code><span id="num_results"></span></code> features from the server and has <code>highlight</code> and <code>popup</code> properties set to true in the layer configuration object. The <code>symbolizer</code> properties is displaying categories from the features attributes.</p>
+				<div class="col-md-12" id="map">
+				</div>
+				
+			</div>
+			<div class="row">
+				<p><a href="https://github.com/alessiodl/Leaflet.d3Layers">Back to GitHub Repository</a></p>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="container">
+				<p class="text-muted">Leaflet.d3Layers - &copy; Alessio Di Lorenzo</p>
+			</div>
+		</footer>
+		
+		<!-- jQuery -->
+		<script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<!-- Latest compiled and minified Bootstrap JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<!-- D3 -->
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<!-- LeafletJS -->
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
 		<script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
 		<!-- esri-leaflet plugin -->
 		<script src="http://cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
 		<!-- Leaflet.d3Layers plugin -->
 		<script src="../dist/D3PointLayer.js"></script>
-		<!-- jQuery -->
-		<script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
-		<!-- App -->
-		<link type="text/css" href="css/style.css" rel="Stylesheet"/>
+		<!-- App Javascript -->
 		<script src="js/utilities.js"></script>
 		<script src="js/config.js"></script>
 		<script src="js/map.js"></script>
-	</head>
-	<body>
-		<div id="map"></div>
 	</body>
 </html>
