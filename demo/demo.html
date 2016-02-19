@@ -10,6 +10,9 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<!-- LeafletJS CSS -->
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
+		<!-- App CSS -->
 		<link type="text/css" href="css/style.css" rel="Stylesheet"/>
 	</head>
 	<body>
@@ -27,8 +30,8 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="index.html">Home</a></li>
-						<li><a href="demo.html">Demo</a></li>
+						<li><a href="index.html">Home</a></li>
+						<li class="active"><a href="demo.html">Demo</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -37,13 +40,10 @@
 		<!-- Begin page content -->
 		<div class="container">
 			<div class="row">
-				<h2>Leaflet.d3Layers</h2>
+				<h2>D3 Point layer</h2>
 				<hr>
-				<div class="jumbotron">
-					<p class="lead">Leaflet.d3Layers is a collection of JavaScript functions used to easily draw <a href="https://d3js.org/" target="_blank">D3.js</a> layers on top of a map built with the <a href="http://leafletjs.com/" target="_blank">Leaflet</a> web mapping library. 
-					The principal advantage in using D3 is the possibility to manage large amount of spatial data as SVG object, mantaining very high performances: no more browser freeze or unresponsive maps!</p>
-				</div>
-				<p class="alert alert-info"><i class="fa fa-info-circle"></i> The plugin is under active development and it is really not recommended for your production environment!</p>
+				<p class="lead">The map in this example is loading <code><span id="num_results"></span></code> features from the server and has <code>highlight</code> and <code>popup</code> properties set to true in the layer configuration object. The <code>symbolizer</code> properties is displaying categories from the features attributes.</p>
+				<div class="col-md-12" id="map"></div>
 			</div>
 		</div>
 
@@ -59,7 +59,17 @@
 		<script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
 		<!-- Latest compiled and minified Bootstrap JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<!-- D3 -->
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<!-- LeafletJS -->
+		<script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
+		<!-- esri-leaflet plugin -->
+		<script src="http://cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
+		<!-- Leaflet.d3Layers plugin -->
+		<script src="../dist/D3PointLayer.js"></script>
 		<!-- App Javascript -->
 		<script src="js/utilities.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/map.js"></script>
 	</body>
 </html>
