@@ -5,7 +5,8 @@ var global = {
 /* Symbolizers */
 var outbreakSimple = {
 	type:"Simple",
-	radius:6,
+	radius:8,
+	symbol:'circle', // 'triangle-up', 'triangle-down', 'square', 'cross', 'diamond'
 	fill:"#900C3F",
 	fillOpacity:0.75,
 	strokeColor:"#FFF",
@@ -15,7 +16,8 @@ var outbreakSimple = {
 var outbreakCategories = {
 	type:"CategorizedSymbols",
 	field:"DISEASE",
-	radius:6,
+	radius:8,
+	symbol:'circle', // 'triangle-up', 'triangle-down', 'square', 'cross', 'diamond'
 	fillOpacity:0.75,
 	strokeColor:"#FFF",
 	strokeWidth:1.5,
