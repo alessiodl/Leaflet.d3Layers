@@ -137,10 +137,10 @@ L.D3PointLayer = L.Layer.extend({
 	
 	_redrawSubset: function (subset) {
 	
+		var pointSymbol = d3.svg.symbol().type(this._styleObject.symbol).size(this._styleObject.radius*10);
+	
 		var transform = d3.geo.transform({ point: this._projectPoint });
 		var path = d3.geo.path().projection(transform);
-	
-		path.pointRadius(this._styleObject.radius);// * scale);
 	
 		var buffer_space = 200; // To fully drawn point markers
 		var bounds = path.bounds({ type: "FeatureCollection", features: subset });
@@ -161,10 +161,16 @@ L.D3PointLayer = L.Layer.extend({
 		var points = g.selectAll("path").data(subset, function (d) {
 			return d.id;
 		});
-     
 		points.enter().append("path");
 		points.exit().remove();
-		points.attr("d", path);
+		points.attr("d", pointSymbol);
+		points.attr("transform", function(d) {
+			var latlng = L.latLng(d.geometry.coordinates[1],d.geometry.coordinates[0])
+			return "translate(" + 
+				map.latLngToLayerPoint(latlng).x+","+map.latLngToLayerPoint(latlng).y
+			+ ")"; 
+		});
+		
 		/* Configurable style properties: SIMPLE STYLE */
 		if (this._styleObject.type == "Simple") {
 			points.style({
