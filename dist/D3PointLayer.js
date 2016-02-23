@@ -3,7 +3,7 @@
  *
  * @author: Alessio Di Lorenzo <alessio.dl@gmail.com>
  * @description: Point layer class with D3 and QuadTree
- * @version: 1.1.0 beta
+ * @version: 1.2.0 beta
  *
  */
 
@@ -137,8 +137,6 @@ L.D3PointLayer = L.Layer.extend({
 	
 	_redrawSubset: function (subset) {
 	
-		var pointSymbol = d3.svg.symbol().type(this._styleObject.symbol).size(this._styleObject.radius*10);
-	
 		var transform = d3.geo.transform({ point: this._projectPoint });
 		var path = d3.geo.path().projection(transform);
 	
@@ -163,7 +161,36 @@ L.D3PointLayer = L.Layer.extend({
 		});
 		points.enter().append("path");
 		points.exit().remove();
-		points.attr("d", pointSymbol);
+		/* Configurable SVG symbol: SIMPLE STYLE */
+		if (this._styleObject.type == "Simple") {
+			var pointSymbol = d3.svg.symbol().type(this._styleObject.symbol).size(this._styleObject.symbolSize*10);
+			points.attr("d", pointSymbol);
+		/* Configurable SVG symbol: CATEGORIZED SYMBOL STYLE */
+		} else if (this._styleObject.type == "CategorizedSymbols") {
+			var style = this._styleObject;
+			var styleField = this._styleObject.field;
+			var styleArray = this._styleObject.categories;
+			var symbols = []; var symbolSizes=[]; var categories = [];
+			styleArray.forEach(function(obj){
+				symbols.push(obj.symbol);
+				symbolSizes.push(obj.symbolSize*10);
+				categories.push(obj.value);
+			});
+			points.attr("d", d3.svg.symbol()
+				.size(function(d){ 
+					var symbolSizeScale = d3.scale.ordinal()
+						.domain(categories)
+						.range(symbolSizes);
+					return symbolSizeScale(d.properties[styleField]); 
+				})
+				.type(function(d){ 
+					var symbolScale = d3.scale.ordinal()
+						.domain(categories)
+						.range(symbols);
+					return symbolScale(d.properties[styleField]);
+				})
+			);
+		}
 		points.attr("transform", function(d) {
 			var latlng = L.latLng(d.geometry.coordinates[1],d.geometry.coordinates[0])
 			return "translate(" + 
@@ -188,14 +215,14 @@ L.D3PointLayer = L.Layer.extend({
 			});
 			var styleField = this._styleObject.field;
 			var styleArray = this._styleObject.categories;
-			colors = []; categories = [];
+			var colors = []; var categories = [];
 			styleArray.forEach(function(obj){
 				colors.push(obj.color);
 				categories.push(obj.value);
 			});
 			var colorScale = d3.scale.ordinal()
-							   .domain(categories)
-							   .range(colors);
+				.domain(categories)
+				.range(colors);
 			points.style("fill",function(d){ return colorScale(d.properties[styleField]); });
 			points.style("fill-opacity", this._styleObject.fillOpacity);
 			points.style("stroke",this._styleObject.strokeColor);

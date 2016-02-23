@@ -5,8 +5,8 @@ var global = {
 /* Symbolizers */
 var outbreakSimple = {
 	type:"Simple",
-	radius:8,
 	symbol:'circle', // 'triangle-up', 'triangle-down', 'square', 'cross', 'diamond'
+	symbolSize:15,
 	fill:"#900C3F",
 	fillOpacity:0.75,
 	strokeColor:"#FFF",
@@ -16,16 +16,14 @@ var outbreakSimple = {
 var outbreakCategories = {
 	type:"CategorizedSymbols",
 	field:"DISEASE",
-	radius:8,
-	symbol:'circle', // 'triangle-up', 'triangle-down', 'square', 'cross', 'diamond'
 	fillOpacity:0.75,
 	strokeColor:"#FFF",
 	strokeWidth:1.5,
 	categories:[
-		{value:"WND", color:"#900C3F"},
-		{value:"SBV", color:"#48CB1E"},
-		{value:"RVF", color:"#FFC300"},
-		{value:"CCHF",color:"#1ECBAF"}
+		{value:"WND", color:"#900C3F", symbol:"circle", symbolSize:10},
+		{value:"SBV", color:"#48CB1E", symbol:"circle", symbolSize:15},
+		{value:"RVF", color:"#FFC300", symbol:"circle", symbolSize:20},
+		{value:"CCHF",color:"#1ECBAF", symbol:"circle", symbolSize:35}
 	]
 };
 
