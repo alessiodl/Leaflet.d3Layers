@@ -3,7 +3,7 @@
  *
  * @author: Alessio Di Lorenzo <alessio.dl@gmail.com>
  * @description: Point layer class with D3 and QuadTree
- * @version: 1.2.0 beta
+ * @version: 1.2.1 beta
  *
  */
 
@@ -27,8 +27,27 @@ L.D3PointLayer = L.Layer.extend({
 	},
    
 	addData: function (featureCollection) {
+	
+		var features = featureCollection.features;
+		// Order features
+		if (this._styleObject.type == "CategorizedSymbols") {
+			var categField = this._styleObject.field;
+			var categories = this._styleObject.categories;
+			// Sorting array
+			categories.forEach(function(cat, i){
+				features.forEach(function(feature){
+					if (feature.properties[categField] == cat.value){
+						// Add a Z-INDEX property to each feature
+						feature.properties["Z___INDEX"] = i;
+					} 
+				});
+			});
+			// console.log(features);
+		};
+		
 		// Load data in qtree structure
-		qtree = d3.geom.quadtree(featureCollection.features.map(function (data, i) {
+		qtree = d3.geom.quadtree(features.map(function (data, i) {
+			
 			return {
 	    		x: data.geometry.coordinates[0],
 	    		y: data.geometry.coordinates[1],
@@ -137,6 +156,12 @@ L.D3PointLayer = L.Layer.extend({
 	
 	_redrawSubset: function (subset) {
 	
+		if (this._styleObject.type == "CategorizedSymbols") {
+			subset.sort(function(a,b){
+				return parseInt(a.properties["Z___INDEX"]) - parseInt(b.properties["Z___INDEX"]);
+			}).reverse();
+		}
+		
 		var transform = d3.geo.transform({ point: this._projectPoint });
 		var path = d3.geo.path().projection(transform);
 	
@@ -210,22 +235,25 @@ L.D3PointLayer = L.Layer.extend({
 		} else if (this._styleObject.type == "CategorizedSymbols") {
 			points.style({
 				"fill-opacity":this._styleObject.fillOpacity,
-				"stroke":this._styleObject.strokeColor,
 				"stroke-width":this._styleObject.strokeWidth
 			});
 			var styleField = this._styleObject.field;
 			var styleArray = this._styleObject.categories;
-			var colors = []; var categories = [];
+			var colors = []; var strokeColors=[]; var categories = [];
 			styleArray.forEach(function(obj){
 				colors.push(obj.color);
+				strokeColors.push(obj.strokeColor);
 				categories.push(obj.value);
 			});
 			var colorScale = d3.scale.ordinal()
 				.domain(categories)
 				.range(colors);
-			points.style("fill",function(d){ return colorScale(d.properties[styleField]); });
+			var strokeColorScale = d3.scale.ordinal()
+				.domain(categories)
+				.range(strokeColors);
+			points.style("fill", function(d){ return colorScale(d.properties[styleField]); });
 			points.style("fill-opacity", this._styleObject.fillOpacity);
-			points.style("stroke",this._styleObject.strokeColor);
+			points.style("stroke", function(d){ return strokeColorScale(d.properties[styleField]); });
 			points.style("stroke-width", this._styleObject.strokeWidth);
 		}
 		/* Highlight properties */
@@ -238,12 +266,17 @@ L.D3PointLayer = L.Layer.extend({
 					"stroke": highlight.strokeColor,
 					"stroke-width": highlight.strokeWidth
 				});
-			});                  
+			});      
 			points.on("mouseout", function(d) {
-				d3.select(this).style({
-					"stroke":style.strokeColor,
-					"stroke-width": style.strokeWidth
-				});
+				if (style.type == "Simple") {
+					d3.select(this).style({
+						"stroke":style.strokeColor,
+						"stroke-width": style.strokeWidth
+					});
+				} else if (style.type == "CategorizedSymbols") {
+					d3.select(this).style("stroke",function(d){ return strokeColorScale(d.properties[styleField]); });
+					d3.select(this).style("stroke-width",style.strokeWidth);
+				}
 			});
 		}
 		/* Popup */
