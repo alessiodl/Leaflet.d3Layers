@@ -17,13 +17,16 @@ var outbreakCategories = {
 	type:"CategorizedSymbols",
 	field:"DISEASE",
 	fillOpacity:0.75,
-	strokeColor:"#FFF",
 	strokeWidth:1.5,
 	categories:[
-		{value:"WND", color:"#900C3F", symbol:"circle", symbolSize:10},
-		{value:"SBV", color:"#48CB1E", symbol:"circle", symbolSize:15},
-		{value:"RVF", color:"#FFC300", symbol:"circle", symbolSize:20},
-		{value:"CCHF",color:"#1ECBAF", symbol:"circle", symbolSize:35}
+		/** The drawing z-order of each category respects its (reversed) position in the array:
+			in this case WND outbreaks will be drawn above SBV, RVF, CCHF.
+			This is useful if you need to define priorities among the categories of a layer!
+		*/
+		{value:"WND", color:"#900C3F", strokeColor:"#FFF", symbol:"circle", symbolSize:10},
+		{value:"SBV", color:"#48CB1E", strokeColor:"#FFF", symbol:"circle", symbolSize:15},
+		{value:"RVF", color:"#FFC300", strokeColor:"#FFF", symbol:"circle", symbolSize:20},
+		{value:"CCHF",color:"#1ECBAF", strokeColor:"#FFF", symbol:"circle", symbolSize:35}
 	]
 };
 
