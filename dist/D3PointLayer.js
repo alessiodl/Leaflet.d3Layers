@@ -1,9 +1,9 @@
 /**
- * Copyright 2016 
+ * Copyright 2017 
  *
  * @author: Alessio Di Lorenzo <alessio.dl@gmail.com>
  * @description: Point layer class with D3 and QuadTree
- * @version: 1.2.1 beta
+ * @version: 1.2.2 RC
  *
  */
 
@@ -229,13 +229,15 @@ L.D3PointLayer = L.Layer.extend({
 				"fill":this._styleObject.fill,
 				"fill-opacity":this._styleObject.fillOpacity,
 				"stroke":this._styleObject.strokeColor,
-				"stroke-width":this._styleObject.strokeWidth
+				"stroke-width":this._styleObject.strokeWidth,
+				"pointer-events": "visible"
 			});
 		/* Configurable style properties: CATEGORIZED SYMBOL STYLE */
 		} else if (this._styleObject.type == "CategorizedSymbols") {
 			points.style({
 				"fill-opacity":this._styleObject.fillOpacity,
-				"stroke-width":this._styleObject.strokeWidth
+				"stroke-width":this._styleObject.strokeWidth,
+				"pointer-events": "visible"
 			});
 			var styleField = this._styleObject.field;
 			var styleArray = this._styleObject.categories;
