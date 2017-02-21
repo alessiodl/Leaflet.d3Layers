@@ -289,19 +289,21 @@ L.D3PointLayer = L.Layer.extend({
 				// console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
 				var popupTitle = popup.template.title; // or... d.properties['ID_OUTBREAK']
 				var attributeArray = popup.template.values;
-				var popupContent = "<h5>"+popupTitle+"</h5><hr>";
+				var popupContent = "<p><strong>"+popupTitle+"</strong></p>";
+				popupContent += "<table class='table table-striped table-condensed'>";
 				attributeArray.forEach(function(obj){
 					// console.log(obj);
 					label = obj.label;
 					fieldName = obj.fieldName;
 					formatFn = obj.formatFn;
-					// content
+					// content table
 					if (formatFn != false){
-						popupContent += label + ": " +formatFn(d.properties[fieldName])+"<br/>";
+						popupContent += "<tr><td>"+label + "</td><td>" +formatFn(d.properties[fieldName])+"</td></tr>";
 					} else {
-						popupContent += label + ": " +d.properties[fieldName]+"<br/>";
+						popupContent += "<tr><td>"+label + "</td><td>" +d.properties[fieldName]+"</td></tr>";
 					}
 				});
+				popupContent += "</table>";
 				
 				L.popup()
 					.setLatLng([d.geometry.coordinates[1],d.geometry.coordinates[0]])
