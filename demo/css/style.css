@@ -46,34 +46,11 @@ code {
     border-radius: 2px !important;
 }
 
-.leaflet-bar a:last-child {
-    border-bottom-left-radius: 2px !important;
-    border-bottom-right-radius: 2px !important;
-}
-
-.leaflet-bar a:first-child {
-    border-top-left-radius: 2px !important;
-    border-top-right-radius: 2px !important;
-}
-
-.leaflet-control-layers {
-	border-radius: 2px !important;
-}
-
-.leaflet-control-layers-group-name {
-	font-weight: bold;
-    margin-bottom: .2em;
-    display: block;
-}
-
-.leaflet-control-layers-group {
-	margin-bottom: .5em;
-}
-
-.leaflet-control-layers-group label {
-	padding-left: .5em;
-}
-
 /* a.leaflet-popup-close-button {
 	visibility:hidden !important;
 }*/
+
+/* Font size for the popup table */
+.leaflet-popup-content-wrapper  .table {
+	font-size:12px; 
+}

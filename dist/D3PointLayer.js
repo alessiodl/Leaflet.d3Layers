@@ -2,8 +2,8 @@
  * Copyright 2017 
  *
  * @author: Alessio Di Lorenzo <alessio.dl@gmail.com>
- * @description: Point layer class with D3 and QuadTree
- * @version: 1.2.2 RC
+ * @description: Point layer class with D3 quadTree
+ * @version: 1.2.3
  *
  */
 
@@ -290,7 +290,7 @@ L.D3PointLayer = L.Layer.extend({
 				var popupTitle = popup.template.title; // or... d.properties['ID_OUTBREAK']
 				var attributeArray = popup.template.values;
 				var popupContent = "<p><strong>"+popupTitle+"</strong></p>";
-				popupContent += "<table class='table table-striped table-condensed'>";
+				popupContent += "<table class='table table-condensed table-striped'>";
 				attributeArray.forEach(function(obj){
 					// console.log(obj);
 					label = obj.label;

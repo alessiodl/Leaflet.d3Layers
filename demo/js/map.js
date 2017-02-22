@@ -2,16 +2,16 @@ var map, outbreaks;
 
 $(document).ready(function(){
 	// Create the Map
-	map = L.map('map').setView([15, -15.0], 2);
+	map = L.map('map').setView([8, 0], 2);
 	
 	// Create an SVG level on the map
 	svg = d3.select(map.getPanes().overlayPane).append("svg");
 	
 	// Define BaseLayers
 	gray 	= L.esri.basemapLayer('Gray');
-	dgray 	= L.esri.basemapLayer('DarkGray').addTo(map);
+	dgray 	= L.esri.basemapLayer('DarkGray')
 	streets = L.esri.basemapLayer('Streets');
-	topo 	= L.esri.basemapLayer('Topographic');
+	topo 	= L.esri.basemapLayer('Topographic').addTo(map);
 	terrain	= L.esri.basemapLayer('Terrain');
 	imagery = L.layerGroup([
 	          L.esri.basemapLayer('Imagery'), 
