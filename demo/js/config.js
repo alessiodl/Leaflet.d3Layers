@@ -56,6 +56,7 @@ var lyrConfig = {
 		},
 		popup: {
 			active:true,
+			method:"client", /* "server" */
 			template: outbreaksPopupTemplate
 		}
 	},

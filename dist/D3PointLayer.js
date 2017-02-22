@@ -282,7 +282,7 @@ L.D3PointLayer = L.Layer.extend({
 			});
 		}
 		/* Popup */
-		if (this._popupObject.active == true) {
+		if ((this._popupObject.active == true) && (this._popupObject.method == "client")) {
 			var popup = this._popupObject;
 			points.on("click",function(d){
 				d3.event.stopPropagation();
@@ -309,6 +309,14 @@ L.D3PointLayer = L.Layer.extend({
 					.setLatLng([d.geometry.coordinates[1],d.geometry.coordinates[0]])
 					.setContent(popupContent).openOn(map);
 				
+			});
+		} else if ((this._popupObject.active == true) && (this._popupObject.method == "server")) {
+			var popup = this._popupObject;
+			points.on("click",function(d){
+				d3.event.stopPropagation();
+				// To Do... lancia una query al servizio per estrarre gli attributi di feature sovrapposte
+				console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
+				// To Do...
 			});
 		}
 	},
