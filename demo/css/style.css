@@ -37,9 +37,9 @@ code {
 /* Map CSS
 -------------------------------------------------- */
 #map {
-  /* width:100%; */ 
+  width:100%;
   height: 550px;
-  box-shadow: 2px 2px 1px #888888;
+  /* box-shadow: 2px 2px 1px #888888;*/
 }
 
 .leaflet-popup-content-wrapper {
