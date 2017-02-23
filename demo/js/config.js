@@ -56,8 +56,9 @@ var lyrConfig = {
 		},
 		popup: {
 			active:true,
-			method:"client", /* "server" */
-			template: outbreaksPopupTemplate
+			template: outbreaksPopupTemplate,
+			method:"server", /* "server" or "client" */
+			url: global.mapservice /* in caso di "server" */
 		}
 	},
 	// JSON configuration object for PIPPO...

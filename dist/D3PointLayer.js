@@ -314,9 +314,28 @@ L.D3PointLayer = L.Layer.extend({
 			var popup = this._popupObject;
 			points.on("click",function(d){
 				d3.event.stopPropagation();
-				// To Do... lancia una query al servizio per estrarre gli attributi di feature sovrapposte
-				console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
-				// To Do...
+				// console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
+				// Server identify
+				$.ajax({ 
+					url: popup.url+"/identify", 
+					dataType:"json",
+					data: { 
+						geometry: '{x:'+d.geometry.coordinates[0]+',y:'+d.geometry.coordinates[1]+'}',
+						geometryType:"esriGeometryPoint",
+						sr:"4326",
+						layers:"0", // Deve essere dinamico
+						layerDefs: " DISEASE <> 'BT' ", // Deve essere dinamico
+						tolerance: "3",
+						mapExtent:"-90,-180,90,180",
+						imageDisplay:"400,300,96",
+						f: "json" 
+					}, 
+					success: function( data ) {
+						// To Do...
+						// Open a paginated popup 
+						console.log( data );
+					}
+				});
 			});
 		}
 	},
