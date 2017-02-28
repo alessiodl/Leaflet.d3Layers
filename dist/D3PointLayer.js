@@ -3,7 +3,7 @@
  *
  * @author: Alessio Di Lorenzo <alessio.dl@gmail.com>
  * @description: Point layer class with D3 quadTree
- * @version: 1.2.3
+ * @version: 1.3
  *
  */
 
@@ -26,9 +26,11 @@ L.D3PointLayer = L.Layer.extend({
 		this._popupObject = layerConfigObject.popup;
 	},
    
-	addData: function (featureCollection) {
+	addData: function (featureCollection,queryString) {
 	
 		var features = featureCollection.features;
+		this._query  = queryString;
+
 		// Order features
 		if (this._styleObject.type == "CategorizedSymbols") {
 			var categField = this._styleObject.field;
@@ -312,28 +314,29 @@ L.D3PointLayer = L.Layer.extend({
 			});
 		} else if ((this._popupObject.active == true) && (this._popupObject.method == "server")) {
 			var popup = this._popupObject;
+			var query = this._query;
 			points.on("click",function(d){
 				d3.event.stopPropagation();
 				// console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
 				// Server identify
 				$.ajax({ 
 					url: popup.url+"/identify", 
-					dataType:"json",
+					dataType:"jsonp",
 					data: { 
-						geometry: '{x:'+d.geometry.coordinates[0]+',y:'+d.geometry.coordinates[1]+'}',
-						geometryType:"esriGeometryPoint",
-						sr:"4326",
-						layers:"0", // Deve essere dinamico
-						layerDefs: " DISEASE <> 'BT' ", // Deve essere dinamico
-						tolerance: "3",
-						mapExtent:"-90,-180,90,180",
-						imageDisplay:"400,300,96",
-						f: "json" 
+						"geometry": '{x:'+d.geometry.coordinates[0]+',y:'+d.geometry.coordinates[1]+'}',
+						"geometryType":"esriGeometryPoint",
+						"sr": 4326,
+						"maxAllowableOffset": 0.1,
+						"layers": "all:"+popup.layerId,
+						"layerDefs": popup.layerId+":"+query, // Deve essere dinamico
+						"tolerance": popup.tolerance,
+						"mapExtent":"-90,-180,90,180",
+						"imageDisplay":"400,300,96",
+						"f": "json" 
 					}, 
 					success: function( data ) {
-						// To Do...
-						// Open a paginated popup 
 						console.log( data );
+						// TO DO: Open a paginated popup 
 					}
 				});
 			});

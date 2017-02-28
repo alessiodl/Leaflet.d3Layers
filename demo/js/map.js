@@ -23,8 +23,9 @@ $(document).ready(function(){
 					.on("dataLoaded", function() { console.log("Data loaded!"); });
 					
 	// Query extracting the data
-	var query = L.esri.query({url: global.mapservice+"/"+lyrConfig.outbreaks.layerId});
-	query.where(" DISEASE <> 'BT' ");
+	var query = L.esri.query({url: global.mapservice+"/"+lyrConfig.outbreaks.layerId}).where("DISEASE <> 'BT'");
+	var queryString = query.params.where;
+	
 	// Run it!
 	query.run(function(error, featureCollection, response){
 		numResults = featureCollection.features.length;
@@ -36,7 +37,7 @@ $(document).ready(function(){
 	    	alert("Nessun risultato!");
 	    } else {
 	    	// Adds the data to the D3 Layer
-	    	outbreaks.addData(featureCollection)
+	    	outbreaks.addData(featureCollection, queryString)
 	    	// Adds the D3 Layer to the map
 	    	outbreaks.addTo(map);
 	    }
