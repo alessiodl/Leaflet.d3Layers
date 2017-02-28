@@ -29,6 +29,7 @@ L.D3PointLayer = L.Layer.extend({
 	addData: function (featureCollection,queryString) {
 	
 		var features = featureCollection.features;
+		// The query parameter is used in server-side identify
 		this._query  = queryString;
 
 		// Order features
@@ -318,6 +319,13 @@ L.D3PointLayer = L.Layer.extend({
 			points.on("click",function(d){
 				d3.event.stopPropagation();
 				// console.log(d.geometry.coordinates[1],d.geometry.coordinates[0]);
+				// Map Bounds
+				var xmin = map.getBounds()._southWest.lng;
+				var ymin = map.getBounds()._southWest.lat;
+				var xmax = map.getBounds()._northEast.lng;
+				var ymax = map.getBounds()._northEast.lat;
+				var mapExtent = xmin+","+ymin+","+xmax+","+ymax
+				console.log(mapExtent);
 				// Server identify
 				$.ajax({ 
 					url: popup.url+"/identify", 
@@ -328,9 +336,9 @@ L.D3PointLayer = L.Layer.extend({
 						"sr": 4326,
 						"maxAllowableOffset": 0.1,
 						"layers": "all:"+popup.layerId,
-						"layerDefs": popup.layerId+":"+query, // Deve essere dinamico
+						"layerDefs": popup.layerId+":"+query, 
 						"tolerance": popup.tolerance,
-						"mapExtent":"-90,-180,90,180",
+						"mapExtent": '"'+mapExtent+'"',
 						"imageDisplay":"400,300,96",
 						"f": "json" 
 					}, 
