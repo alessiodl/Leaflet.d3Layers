@@ -325,7 +325,7 @@ L.D3PointLayer = L.Layer.extend({
 				var xmax = map.getBounds()._northEast.lng;
 				var ymax = map.getBounds()._northEast.lat;
 				var mapExtent = xmin+","+ymin+","+xmax+","+ymax
-				console.log(mapExtent);
+				// console.log(mapExtent);
 				// Server identify
 				$.ajax({ 
 					url: popup.url+"/identify", 
@@ -344,7 +344,30 @@ L.D3PointLayer = L.Layer.extend({
 					}, 
 					success: function( data ) {
 						console.log( data );
+						
 						// TO DO: Open a paginated popup 
+						var popupTitle = popup.template.title; // or... d.properties['ID_OUTBREAK']
+						var attributeArray = popup.template.values;
+						var popupContent = "<div class='container' style='width:300px;'>";			// Popup container
+						popupContent 	+= "<div class='row'><div class='col-md-12'><h5><strong>"+popupTitle+"</strong></h5></div></div>"; // Title
+						popupContent	+= "<div class='row'>"+  									// Main popup content
+												"<div class='col-md-12'>"+
+												"<p class='alert alert-info'>My test content</p>"+
+											"</div>";
+						popupContent	+= "</div>"; 												// Close main popup content
+						popupContent	+= "<div class='row'>"+ 									// Page navigator
+												"<div class='col-md-8'><span class='text-muted'>Page n of "+data.results.length+"</span></div>"+
+												"<div class='col-md-4 text-right'>"+
+													"<a href='#' title='Prev' class='link'>&laquo;</a>&nbsp;"+ 
+													"<a href='#' title='Next' class='link'>&raquo;</a>"
+												"</div>"+ 
+											"</div>";
+						popupContent	+= "</div></div>";											// Close page navigator
+						popupContent 	+= "</div>"; 												// Close container
+						L.popup()
+							.setLatLng([d.geometry.coordinates[1],d.geometry.coordinates[0]])
+							.setContent(popupContent).openOn(map);
+						
 					}
 				});
 			});
