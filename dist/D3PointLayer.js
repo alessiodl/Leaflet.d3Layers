@@ -347,13 +347,15 @@ L.D3PointLayer = L.Layer.extend({
 						// Popup content template 
 						var popupTitle = popup.template.title; // or... d.properties['ID_OUTBREAK']
 						var attributeArray = popup.template.values;
-						var popupContent = "<div class='container' style='width:300px;'>";	// Popup container
+						var popupContent = "<div class='container' style='width:320px;'>";	// Popup container
 						popupContent 	+= "<div class='row'><div class='col-md-12'><strong>"+popupTitle+"</strong></div></div>"; // Title
 						popupContent 	+= "<div class='row'><div class='col-md-12'><span id='popup-counter' class='text-muted'></span></div></div>"; // Counter
 						popupContent	+= "<div class='row'>"+  									// Main popup content
-												"<div class='col-md-12'><div id='popup-body'></div></div>"+
+												"<div class='col-md-12'>"+
+													"<div id='popup-body'></div>"+
+												"</div>"+
 											"</div>";
-						popupContent	+= "<div class='row text-center'>"+ 									// Page navigator
+						popupContent	+= "<div class='row'>"+ 									// Page navigator
 												"<div class='col-md-12'><div id='popup-paginator'></div></div>";
 						popupContent	+= "</div>";												// Close page navigator
 						popupContent 	+= "</div>"; 												// Close container
@@ -364,7 +366,20 @@ L.D3PointLayer = L.Layer.extend({
 							.setContent(popupContent).openOn(map);
 						// Popup content in case of 1 result
 						$("#popup-counter").html("result 1 of "+data.results.length).css("font-size",11);
-						$("#popup-body").html( "ID Outbreak: "+ data.results[0].attributes["ID_OUTBREAK"] );
+						$("#popup-body").html("");
+						$("#popup-body").append("<table id='popup-table' class='table table-bordered table-condensed table-striped'><tbody></tdoby></table>");
+						attributeArray.forEach(function(obj){
+							// console.log(obj);
+							label = obj.label;
+							fieldName = obj.fieldName;
+							formatFn = obj.formatFn;
+							// content table
+							if (formatFn != false){
+								$("#popup-table > tbody").append( "<tr><td>"+label + "</td><td>" +formatFn(data.results[0].attributes[fieldName])+"</td></tr>" );
+							} else {
+								$("#popup-table > tbody").append( "<tr><td>"+label + "</td><td>" +data.results[0].attributes[fieldName]+"</td></tr>" );
+							}
+						});
 						// Popup content with pagination for multiple results
 						if (data.results.length > 1){
 							$('#popup-paginator').bootpag({
@@ -380,7 +395,20 @@ L.D3PointLayer = L.Layer.extend({
 								num = parseInt(num);
 								n = num - 1;
 								$("#popup-counter").html("result "+num.toString()+" of "+data.results.length).css("font-size",11);
-								$("#popup-body").html( "ID Outbreak: "+ data.results[n].attributes["ID_OUTBREAK"] ); // some ajax content loading...
+								$("#popup-body").html("");
+								$("#popup-body").append("<table id='popup-table' class='table table-bordered table-condensed table-striped'><tbody></tdoby></table>");
+								attributeArray.forEach(function(obj){
+									// console.log(obj);
+									label = obj.label;
+									fieldName = obj.fieldName;
+									formatFn = obj.formatFn;
+									// content table
+									if (formatFn != false){
+										$("#popup-table > tbody").append( "<tr><td>"+label + "</td><td>" +formatFn(data.results[n].attributes[fieldName])+"</td></tr>" );
+									} else {
+										$("#popup-table > tbody").append( "<tr><td>"+label + "</td><td>" +data.results[n].attributes[fieldName]+"</td></tr>" );
+									}
+								});
 							});
 						}
 	
