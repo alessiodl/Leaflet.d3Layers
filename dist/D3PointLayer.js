@@ -344,30 +344,46 @@ L.D3PointLayer = L.Layer.extend({
 					}, 
 					success: function( data ) {
 						console.log( data );
-						
-						// TO DO: Open a paginated popup 
+						// Popup content template 
 						var popupTitle = popup.template.title; // or... d.properties['ID_OUTBREAK']
 						var attributeArray = popup.template.values;
-						var popupContent = "<div class='container' style='width:300px;'>";			// Popup container
-						popupContent 	+= "<div class='row'><div class='col-md-12'><h5><strong>"+popupTitle+"</strong></h5></div></div>"; // Title
+						var popupContent = "<div class='container' style='width:300px;'>";	// Popup container
+						popupContent 	+= "<div class='row'><div class='col-md-12'><strong>"+popupTitle+"</strong></div></div>"; // Title
+						popupContent 	+= "<div class='row'><div class='col-md-12'><span id='popup-counter' class='text-muted'></span></div></div>"; // Counter
 						popupContent	+= "<div class='row'>"+  									// Main popup content
-												"<div class='col-md-12'>"+
-												"<p class='alert alert-info'>My test content</p>"+
+												"<div class='col-md-12'><div id='popup-body'></div></div>"+
 											"</div>";
-						popupContent	+= "</div>"; 												// Close main popup content
-						popupContent	+= "<div class='row'>"+ 									// Page navigator
-												"<div class='col-md-8'><span class='text-muted'>Page n of "+data.results.length+"</span></div>"+
-												"<div class='col-md-4 text-right'>"+
-													"<a href='#' title='Prev' class='link'>&laquo;</a>&nbsp;"+ 
-													"<a href='#' title='Next' class='link'>&raquo;</a>"
-												"</div>"+ 
-											"</div>";
-						popupContent	+= "</div></div>";											// Close page navigator
+						popupContent	+= "<div class='row text-center'>"+ 									// Page navigator
+												"<div class='col-md-12'><div id='popup-paginator'></div></div>";
+						popupContent	+= "</div>";												// Close page navigator
 						popupContent 	+= "</div>"; 												// Close container
+						
+						// Open popup
 						L.popup()
 							.setLatLng([d.geometry.coordinates[1],d.geometry.coordinates[0]])
 							.setContent(popupContent).openOn(map);
-						
+						// Popup content in case of 1 result
+						$("#popup-counter").html("result 1 of "+data.results.length).css("font-size",11);
+						$("#popup-body").html( "ID Outbreak: "+ data.results[0].attributes["ID_OUTBREAK"] );
+						// Popup content with pagination for multiple results
+						if (data.results.length > 1){
+							$('#popup-paginator').bootpag({
+								total: data.results.length,
+								page: 1,
+								maxVisible: 4,
+								leaps: true,
+								firstLastUse: true,
+								first: '&larr;',
+								last: '&rarr;',
+								wrapClass: 'pagination pagination-sm',
+							}).on("page", function(event, num){
+								num = parseInt(num);
+								n = num - 1;
+								$("#popup-counter").html("result "+num.toString()+" of "+data.results.length).css("font-size",11);
+								$("#popup-body").html( "ID Outbreak: "+ data.results[n].attributes["ID_OUTBREAK"] ); // some ajax content loading...
+							});
+						}
+	
 					}
 				});
 			});
