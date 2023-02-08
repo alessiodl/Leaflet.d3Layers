@@ -1,5 +1,5 @@
 var global = { 
-	mapservice: "http://mapserver.izs.it/public/rest/services/Public/ARBOZOONET/MapServer" 
+	mapservice: "https://webgis.izs.it/arcgis/rest/services/NetMed/NETMED/MapServer" 
 };
 
 /* Symbolizers */
